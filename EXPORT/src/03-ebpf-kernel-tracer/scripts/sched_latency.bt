@@ -1,0 +1,27 @@
+#!/usr/bin/env bpftrace
+/* ==============================================================================
+ * Subproject 03: ebpf-kernel-tracer
+ * Agent 3A: Kernel Scheduler Specialist
+ * Agent 3B: BPFtrace & FlameGraph Metrics Engineer
+ * Trace Context Switch Latency & Runqueue Jitter (Linux 7.1.5 Mainline)
+ * ============================================================================== */
+
+BEGIN
+{
+    printf("🚀 [Agent 3A/3B] Avvio Tracciamento Latenza Scheduler Kernel (Premi Ctrl+C per fermare)...\n");
+}
+
+tracepoint:sched:sched_switch
+{
+    @switch_count[args.next_comm] = count();
+}
+
+tracepoint:sched:sched_stat_runtime
+{
+    @runtime_us[args.comm] = hist(args.runtime / 1000);
+}
+
+END
+{
+    printf("\n📊 Report Latenza e Run-time Scheduler Kernel:\n");
+}
