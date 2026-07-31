@@ -1,0 +1,45 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 1K of event 'cpu/cycles/P'
+# Event count (approx.): 18124769568
+#
+# Children      Self  Command          Shared Object                  Symbol                                                                                                                                                                                                   
+# ........  ........  ...............  .............................  .........................................................................................................................................................................................................
+#
+    47.46%     0.00%  swapper          [kernel.kallsyms]              [.] common_startup_64
+            |
+            ---common_startup_64
+               |          
+               |--44.51%--start_secondary
+               |          cpu_startup_entry
+               |          do_idle
+               |          |          
+               |          |--42.90%--cpuidle_idle_call
+               |          |          |          
+               |          |           --42.12%--cpuidle_enter
+               |          |                     cpuidle_enter_state
+               |          |                     |          
+               |          |                     |--37.46%--intel_idle_ibrs
+               |          |                     |          
+               |          |                     |--1.91%--intel_idle
+               |          |                     |          
+               |          |                     |--1.46%--asm_sysvec_apic_timer_interrupt
+               |          |                     |          |          
+               |          |                     |           --1.43%--sysvec_apic_timer_interrupt
+               |          |                     |                     |          
+               |          |                     |                     |--0.73%--__irq_exit_rcu
+               |          |                     |                     |          handle_softirqs
+               |          |                     |                     |          
+               |          |                     |                      --0.66%--__sysvec_apic_timer_interrupt
+               |          |                     |                                |          
+               |          |                     |                                 --0.64%--hrtimer_interrupt
+               |          |                     |                                           |          
+               |          |                     |                                            --0.54%--__hrtimer_run_queues
+               |          |                     |          
+               |          |                      --0.84%--asm_common_interrupt
+               |          |                                common_interrupt
+               |          |                                |          
+               |          |                                 --0.62%--__common_interrupt

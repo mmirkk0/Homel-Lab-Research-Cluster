@@ -1,0 +1,34 @@
+#!/usr/bin/env bpftrace
+/*
+ * NAPI Poll Loop & TCP Backlog Queue Tracing Script
+ * Measures latency spent in napi_poll() driver loop and TCP backlog queue.
+ */
+
+BEGIN
+{
+    printf("Tracing NAPI poll execution time and TCP backlog latency... Ctrl-C to stop.\n");
+}
+
+kprobe:napi_poll
+{
+    @start[tid] = nsecs;
+}
+
+kretprobe:napi_poll
+/@start[tid]/
+{
+    $duration_us = (nsecs - @start[tid]) / 1000;
+    @napi_poll_lat_us = hist($duration_us);
+    delete(@start[tid]);
+}
+
+tracepoint:tcp:tcp_probe
+{
+    @tcp_backlog_pkts = hist(args.srtt);
+}
+
+END
+{
+    printf("\nNAPI Poll Execution Latency Histogram (microseconds):\n");
+    print(@napi_poll_lat_us);
+}
